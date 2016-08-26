@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta content="text/html/">
+<title>Comp ID generator</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+<script>
+$(function(){
+	
+	$("#theVars :input[name='checkSM']").click(function() {
+		if ($(this).is(':checked')){
+			$("#numSM").fadeIn("fast");
+		} else {
+			$("#numSM").fadeOut("fast");
+		}
+	});
+
+	$("#theVars :input[name='checkNEFU']").click(function() {
+		if ($(this).is(':checked')){
+			$("#numNEFU").fadeIn("fast");
+		} else {
+			$("#numNEFU").fadeOut("fast");
+		}
+	});
+
+	$("#theVars :input[name='checkDL']").click(function() {
+		if ($(this).is(':checked')){
+			$("#numDL").fadeIn("fast");
+		} else {
+			$("#numDL").fadeOut("fast");
+		}
+	});
+
+	$("#theVars :input[name='name']").click(function() {
+		$("#nameError").fadeOut("fast");			
+	});
+
+	$("#theVars :input[name='email']").click(function() {
+		$("#emailError").fadeOut("fast");			
+	});
+	
+	$("#theVars :input[name='date']").click(function() {
+		$("#dateError").fadeOut("fast");			
+	});
+		
+	$(":checkbox").on("click",function() {
+		$("#idError").fadeOut("fast");			
+	});	
+	
+    $(":button").click(function(){
+		
+		$("#nameError, #dateError, #emailError, #idError").removeClass("animation-name");	
+		$("#nameError, #dateError, #emailError, #idError").fadeOut();	
+		$("#nameError, #dateError, #emailError, #idError").stop(true,true);
+		
+
+		
+        var theName = $("#theVars :input[name='name']").val();
+        var theEmail = $("#theVars :input[name='email']").val();
+        var theExpDate = $("#theVars :input[name='date']").val();		
+        var bolGP = $("#theVars :input[name='checkGP']").is(':checked');
+        var bolSM = $("#theVars :input[name='checkSM']").is(':checked');
+        var bolNEFU = $("#theVars :input[name='checkNEFU']").is(':checked');
+        var bolDL = $("#theVars :input[name='checkDL']").is(':checked');	
+		var numSM = $("#theVars :input[name='numSM']").val();		
+		var numNEFU = $("#theVars :input[name='numNEFU']").val();		
+		var numDL = $("#theVars :input[name='numDL']").val();		
+		var theSender =$("#theVars :input[name='sender']:checked").val();
+		var bolCCDrK = $("#theVars :input[name='ccDrK']").is(':checked');
+
+		if(bolCCDrK==true) {
+			includeDrK="cc=akuttan@nefuniversity.org";
+		} else { 
+			includeDrK=""; 
+			}
+
+		var rand = 0;
+		
+		if(theName == "") {
+			$("#nameError").show().css("animation-name","error")
+			var theresAnError = true;
+		} 
+
+		if(theEmail == "") {
+			$("#emailError").show().css("animation-name","error");
+			var theresAnError = true;
+		} 
+
+		if(theExpDate == "") {
+			$("#dateError").show().css("animation-name","error");	
+			var theresAnError = true;
+		} 
+		if (!(bolSM || bolGP || bolNEFU || bolDL)){
+			$("#idError").show().css("animation-name","error");	
+			var theresAnError = true;
+		} 
+	
+		if (theresAnError){
+			return;
+		}
+	
+		rand = 10 + Math.floor(Math.random() * (17-numSM));
+
+		var theSMCredentials = "";
+		for (var i=1; i <= numSM; i++) {
+			theSMCredentials += "username: smdemo" + (rand + i) + "&nbsp;&nbsp;&nbsp;&nbsp; password: smdemo" + (rand + i) + "<br>";
+		}
+
+		rand = 10 + Math.floor(Math.random() * 50);	
+		
+		var theNEFUCredentials = "";
+		for (var i=1; i <= numNEFU; i++) {
+			theNEFUCredentials += "username: nefu" + (rand + i) + "&nbsp;&nbsp;&nbsp;&nbsp; password: comp" + (rand + i) + "<br>";
+		}
+	
+		rand = 10 + Math.floor(Math.random() * 50);	
+	
+		var theDLCredentials = "";
+		for (var i=1; i <= numDL; i++) {
+			theDLCredentials += "username: dl" + (rand + i) + "&nbsp;&nbsp;&nbsp;&nbsp; password: ict" + (rand + i) + "<br>";
+		}	
+	
+		$('#theirName').text( theName );
+		$('#theirEmail').text( theEmail );
+		$('#expDate').text( theExpDate );		
+		$('#credSM').html( theSMCredentials );		
+		$('#credNEFU').html( theNEFUCredentials );		
+		$('#credDL').html( theDLCredentials );		
+		$('#sender').text( theSender );
+				
+		$("div").fadeIn();
+		
+		if(bolGP==false) {
+			$("#gp").hide();	
+		}
+		
+		if(bolSM==false) {
+			$("#sm").hide();	
+		}
+		
+		if(bolNEFU==false) {
+			$("#nefu").hide();	
+		}
+		
+		if(bolDL==false) {
+			$("#dl").hide();	
+		}
+		
+		$("a[id=sendLink]").attr("href","mailto:"+theEmail+"?"+includeDrK+"&Subject=NEFU Complimentary IDs");				
+		$("a[id=sendLink]").fadeIn();
+    });
+});
+
+
+</script>
+<style type="text/css">
+@keyframes error {
+	from { color: #F00; }
+	to { color: #000; }
+}
+
+@keyframes highlight {
+	from { color:#900; }
+	to { color: #fff; }
+}
+
+input {
+	animation-duration: 2s;
+}
+
+span.error { 	
+		animation-duration: 2s; 
+		font-weight:bold;
+		transition: all 2s ease;
+		display:none;
+	} 
+	
+
+.unclickable {
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+-o-user-select: none;
+user-select: none;
+}
+
+.inputs {
+	float:left;
+	width:25%;
+	position:fixed;
+}
+
+.message {
+	width: 70%;
+	float:right;
+	display:none;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- <form id="thePrompt">
+Paste the subject of the email here:<br />
+<input type="text" id="targetArea"/>
+</form> -->
+
+<div class="inputs">
+<form id="theVars" style="display:inline;" class="unclickable">
+Name <span id="nameError" class="error">Hey, you need to enter a name!</span><br />
+<input type="text" name="name" /><br />
+Email <span id="emailError" class="error">Hey, you need to enter an email address!</span><br />
+<input type="text" name="email" /><br />
+Exp Date <span id="dateError" class="error">Hey, you need to enter an expiration date!</span><br />
+<input type="text" name="date"/><br />
+Demo: <span id="idError" class="error">OY you gotta pick at least one ID!</span><br />
+<label><input type="checkbox" name="checkGP" value="gp" checked />GradPoint</label><br />
+<label><input type="checkbox" name="checkSM" value="sm" checked />SuccessMaker</label><span style="margin-left:20px" id="numSM">How many? <input tyle="text" name="numSM" value="1"/></span><br />
+<label><input type="checkbox" name="checkNEFU" value="nefu" checked />NEFU Courses</label><span style="margin-left:20px" id="numNEFU">How many? <input tyle="text" name="numNEFU" value="1"/></span><br />
+<label><input type="checkbox" name="checkDL" value="dl" checked />Digital Literacy</label><span style="margin-left:20px" id="numDL">How many? <input tyle="text" name="numDL" value="1"/></span><br />
+
+<br />
+Sender<br />
+<label><input type="radio" name="sender" value="Marshall 'Mush' Hughes" checked />Mush</label>
+<label><input type="radio" name="sender" value="Tamara Stephens"/>Tamara</label>
+<label><input type="radio" name="sender" value="Steve Canning"/>Steve</label>
+<label><input type="radio" name="sender" value="Dr. Appu Kuttan"/>Dr K</label>
+
+<br /><br />
+CC Dr K?<br />
+<label><input type="checkbox" name="ccDrK" value="ccDrK" checked />CC Dr K</label>
+<br /><br />
+<input type="button" name="go" value="Generate" />
+</form>
+
+</div>
+
+
+<div class="message">
+<a style="display:none;" id="sendLink" target="_blank" href="mailto:someone@someone.com?Subject=something"><h2 class="unclickable">Ready to send! Hit Control or Command-A (select all), then Control/Command C (copy), then click this link.</h2></a>
+
+Dear <span id="theirName">Kathy</span>,<br />
+ 
+Greetings! Below, please find instructions for how to access the complimentary courses provided to you by our chairman and CEO, Dr Appu Kuttan:
+
+<p><em>If any of the links below do not work, please copy and paste the URL into the browser's address bar.</em></p>
+
+<div id="gp">
+<h2>Pearson GradPoint (6-12)</h2>
+<p><em>(9-12 English, Math, Science, and Social Studies courses, as well as SAT, ACT, and GED prep and practice assessment courses)</em><br />
+Web-based individualized online courses rated at the top by the U.S. Education Dept.
+An average student can advance a grade level in math or reading in 20-30 learning hours! </p>
+<p><a href="http://www.nefuniversity.org/complimentary-gradpoint-course-access/" target="_blank">Click here for demo access and more information about Gradpoint courses</a></p>
+<p><a href="https://assets.pearsonschool.com/asset_mgr/current/201431/GradPoint_Natl_CourseCatalog_Lo_581N055.pdf" target="_blank">Click here to see the full GradPoint Course Catalog.</a></p>
+</div>
+
+<div id="sm">
+<h2>Pearson SuccessMaker (K-8)</h2>
+<em>(K-8 English and Math)</em><br />
+Web-based individualized online courses rated at the top by the U.S. Education Dept. An average student can advance a grade level in math or reading in 20-30 learning hours. </p>
+<p><a href="https://www.youtube.com/watch?v=OlPBKnmmWFY" target="_blank">Click here for more information and to preview SuccessMaker courses</a></p>
+<p>If you would like to try a demo, please access SM through the following login information:<br />
+URL: <a href="https://nef.smhost.net/" target="_blank">https://nef.smhost.net</a><br />
+<span id="credSM">replace</span>
+<strong>Please note</strong> that your browser must be fully updated, including Flash (for SM Math).</p>
+</div>
+
+<div id="nefu">
+<h2>NEF University (Nine-Package Solution)</h2>
+<em>(Over 2,500 courses in IT, Desktop, Business and other softskill training)</em><br />
+The complimentary NEFUniversity ID provides 24/7 access to our top-quality Web-based courses, covering all of the needs of anyone seeking high-quality jobskills training in IT, Business, Management and Soft Skills, and standard test prep. Many of our courses are ranked at the top by the US Education Dept. Anyone completing the IT/Business/Management/Soft Skills courses will receive course completion certificates from our academic partner, the State University of New York. </p>
+<p>Login at <a href="https://nefuniversity.skillport.com/" target="_blank">https://nefuniversity.skillport.com/</a> with the following credentials and see directions below them: </p>
+<span id="credNEFU">replace</span>
+<p>Select "Catalog" from the menu on the left, expand the "Demo Licenses 2016" folder, then choose one of the courseware packages, and select a course to demo it.  </p>
+</div>
+
+<div id="dl">
+<h2>NEF Digital Literacy</h2>
+<em>Basic Computer Skills Course for students 9 to 99+</em><br />
+This Digital Literacy course explores the core concepts and essential foundations of using a computer comfortably and well. Many people who use computers only know how to do things that are necessary for their job or immediate hobbies. This course builds on a user’s basic familiarity with computers and teaches helpful and critical skills in three modules: Basic Computing, Living Online, and Key Applications.
+<p>To preview the Digital Literacy course, head to: <a href="http://ict.cyberlearning.org/" target="_blank">http://ict.cyberlearning.org/</a> and use the following credentials:</p>
+<span id="credDL">replace</span>
+</div>
+
+
+<p>These Demo IDs Expire on: <span id="expDate">4/30/2016</span></p>
+
+<p>If you have any issues accessing the courses, please call us at the State University of New York at Potsdam at <strong>(315) 665.1633</a></strong></p>
+<p>Thank you! Have a great day</p>
+<p><span id="sender">replace</span></p>
+
+</div>
+
+</body>
+</html>
